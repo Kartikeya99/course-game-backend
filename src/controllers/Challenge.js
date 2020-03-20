@@ -1,29 +1,32 @@
 const Challenge = require("../models/Challenge");
 
-const addChallenge = (profId, courseId, level) => {
+const addChallenge = (courseId, name) => {
 	const newChallenge = {
-		profId,
 		courseId,
-		level
+		name
 	};
 
 	Challenge.create(newChallenge, (err, message) => {
 		if (err) console.log(err);
-		else console.log("Challenge added");
+		else {
+			console.log("challenge added");
+			data = Challenge.find(newChallenge);
+			return data;
+		}
 	});
 };
 
-const getChallengeList = (profId, courseId) => {
-	Challenge.find({ profId, courseId }, (err, docs) => {
+const getChallengeList = courseId => {
+	Challenge.find({ courseId }, (err, docs) => {
 		if (err) console.log(err);
 		return docs;
 	});
 };
 
-const deleteChallenge = id => {
-	Challenge.deleteOne({ _id: id }, err => {
+const deleteChallenge = chalengeId => {
+	Challenge.deleteOne({ _id: challengeId }, err => {
 		if (err) console.log(err);
-		else console.log("Challenge deleted");
+		else return 0;
 	});
 };
 

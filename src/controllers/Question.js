@@ -25,7 +25,7 @@ const addQuestion = (
 
 	Question.create(newQuestion, (err, message) => {
 		if (err) console.log(err);
-		else console.log("Question added");
+		else return 0;
 	});
 };
 
@@ -39,14 +39,14 @@ const getQuestionList = challengeId => {
 const updateQuestion = question => {
 	Question.findByIdAndUpdate(question.id, question, err => {
 		if (err) console.log(err);
-		else console.log("Question Updated");
+		else return 0;
 	});
 };
 
-const deleteQuestion = id => {
-	Question.deleteOne({ _id: id }, err => {
+const deleteQuestion = questionId => {
+	Question.deleteOne({ _id: questionId }, err => {
 		if (err) console.log(err);
-		else console.log("Question deleted");
+		else return 0;
 	});
 };
 

@@ -8,7 +8,11 @@ const addCourse = (profId, name) => {
 
 	Course.create(newCourse, (err, message) => {
 		if (err) console.log(err);
-		else console.log("Course added");
+		else {
+			console.log(`Course added`);
+			data = Course.find(newCourse);
+			return data;
+		}
 	});
 };
 
@@ -22,7 +26,10 @@ const getCourseList = profId => {
 const deleteCourse = id => {
 	Course.deleteOne({ _id: id }, err => {
 		if (err) console.log(err);
-		else console.log("Course deleted");
+		else {
+			console.log(`Course deleted`);
+			return 0;
+		}
 	});
 };
 

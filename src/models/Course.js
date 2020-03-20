@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
-	profId: Schema.Types.ObjectId,
+	profId: mongoose.Schema.Types.ObjectId,
 	name: String
 });
 

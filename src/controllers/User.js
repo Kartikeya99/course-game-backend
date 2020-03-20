@@ -11,25 +11,28 @@ const addUser = (name, category, yearIfStud, email, password) => {
 
 	User.create(newUser, (err, message) => {
 		if (err) console.log(err);
-		else console.log("User added");
+		else return 0;
 	});
 };
 
-const getUserList = args => {
-	console.log("Yet to be Implemented");
+const getUser = user => {
+	User.find(user, (err, doc) => {
+		if (err) console.log(err);
+		else return doc;
+	});
 };
 
 const updateUser = user => {
 	User.findByIdAndUpdate(user.id, user, err => {
 		if (err) console.log(err);
-		else console.log("User Updated");
+		else return 0;
 	});
 };
 
 const deleteUser = id => {
 	User.deleteOne({ _id: id }, err => {
 		if (err) console.log(err);
-		else console.log("User deleted");
+		else return 0;
 	});
 };
 
@@ -37,5 +40,5 @@ module.exports = {
 	addUser,
 	deleteUser,
 	updateUser,
-	getUserList
+	getUser
 };
