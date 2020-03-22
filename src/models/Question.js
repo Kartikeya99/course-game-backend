@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema({
-	challengeId: mongoose.Schema.Types.ObjectId,
-	category: String, // MCQ or textual
+	challengeId: String,
+	category: { type: String, default: "" }, // MCQ or textual
 	question: String,
 	answer: String, // If MCQ then this will be used otherwise manual checking
 	option1: { type: String, default: "" },

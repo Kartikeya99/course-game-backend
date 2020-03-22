@@ -1,43 +1,21 @@
 const questionCtrl = require("../controllers/Question");
+const express = require("express");
 const router = express.Router();
-const express = require("express")
-
-router.get("/", (req, res) => {
-    data = questionCtrl.getQuestionList(req.query.challengeId)
-    response = {
-        status: 200,
-        message: data
-    }
-    res.send(response)
-})
-
-router.delete("/", (req, res) => {
-    if(!questionCtrl.deleteQuestion(req.query.questionId)) {
-        response = {
-            status = 200,
-            message: "Question deleted successfully"
-        }
-        res.send(response)
-    }
-})
 
 router.post("/create", (req, res) => {
-    if(!questionCtrl.addQuestion(req.body)) {
-        response = {
-            status: 200,
-            message: "Question added successfully"
-        }
-        res.send(response)
-    }
-})
+	questionCtrl.addQuestion(req.body, res);
+});
 
+router.get("/", (req, res) => {
+	data = questionCtrl.getQuestionList(req.query.challengeId, res);
+});
 
 router.post("/update", (req, res) => {
-    if(!questionCtrl.updateQuestion(req.body)) {
-        response = {
-            status: 200,
-            message: "Question updated successfully"
-        }
-        res.send(response)
-    }
-})
+	questionCtrl.updateQuestion(req.body, res);
+});
+
+router.delete("/", (req, res) => {
+	questionCtrl.deleteQuestion(req.query.questionId, res);
+});
+
+module.exports = router;

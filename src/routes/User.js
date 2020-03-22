@@ -1,44 +1,25 @@
 const userCtrl = require("../controllers/User");
-const router = express.Router();
 const express = require("express");
-
-router.post("/", (req, res) => {
-	data = userCtrl.getUser(req.body);
-	if (data.length) {
-		response = {
-			status: 200,
-			message: data
-		};
-		res.send(response);
-	}
-});
+const router = express.Router();
 
 router.post("/create", (req, res) => {
-	if (!userCtrl.addUser(req.body)) {
-		response = {
-			status: 200,
-			message: "user added successfully"
-		};
-		res.send(response);
-	}
+	userCtrl.addUser(req.body, res);
+});
+
+router.get("/", (req, res) => {
+	userCtrl.getAllUser(res);
+});
+
+router.post("/", (req, res) => {
+	userCtrl.getUser(req.body, res);
 });
 
 router.post("/update", (req, res) => {
-	if (!userCtrl.updateUser(req.body)) {
-		response = {
-			status: 200,
-			message: "user updated successfully"
-		};
-		res.send(response);
-	}
+	userCtrl.updateUser(req.body, res);
 });
 
-router.delete("/delete", (req, res) => {
-	if (!userCtrl.deleteUser(req.body)) {
-		response = {
-			status: 200,
-			message: "user deleted successfully"
-		};
-		res.send(response);
-	}
+router.delete("/", (req, res) => {
+	userCtrl.deleteUser(req.query.userId, res);
 });
+
+module.exports = router;

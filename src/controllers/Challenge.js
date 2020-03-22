@@ -1,32 +1,47 @@
 const Challenge = require("../models/Challenge");
+const Question = require("../models/Question");
 
-const addChallenge = (courseId, name) => {
-	const newChallenge = {
-		courseId,
-		name
-	};
-
+const addChallenge = (newChallenge, res) => {
 	Challenge.create(newChallenge, (err, message) => {
 		if (err) console.log(err);
 		else {
-			console.log("challenge added");
-			data = Challenge.find(newChallenge);
-			return data;
+			response = {
+				status: 200,
+				message
+			};
+			res.send(response);
 		}
 	});
 };
 
-const getChallengeList = courseId => {
-	Challenge.find({ courseId }, (err, docs) => {
+const getChallengeList = (courseId, res) => {
+	Challenge.find({ courseId }, (err, message) => {
 		if (err) console.log(err);
-		return docs;
+		else {
+			response = {
+				status: 200,
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 
-const deleteChallenge = chalengeId => {
+const deleteChallenge = (challengeId, res) => {
 	Challenge.deleteOne({ _id: challengeId }, err => {
 		if (err) console.log(err);
-		else return 0;
+		else {
+			Question.deleteMany({ challengeId }, (err, msg) => {
+				if (err) console.log(err);
+				else {
+					response = {
+						status: 200,
+						message: "Challenge deleted successfully"
+					};
+					res.send(response);
+				}
+			});
+		}
 	});
 };
 

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const Question = require("./Question");
 
 const challengeSchema = new mongoose.Schema({
-	courseId: mongoose.Schema.Types.ObjectId,
+	courseId: String,
 	name: String
 });
 

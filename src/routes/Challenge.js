@@ -1,30 +1,17 @@
 const challengeCtrl = require("../controllers/Challenge");
-const router = express.Router();
 const express = require("express");
+const router = express.Router();
 
-router.get("/", (req, res) => {
-	data = challengeCtrl.getChallengeList(req.query.courseId);
-	response = {
-		status: 200,
-		message: data
-	};
-	res.send(response);
+router.post("/create", (req, res) => {
+	challengeCtrl.addChallenge(req.body, res);
 });
 
-router.get("/create", (req, res) => {
-	data = challengeCtrl.addChallenge(req.query.courseId, name);
-	response = {
-		status: 200,
-		message: data
-	};
-	res.send(response);
+router.get("/", (req, res) => {
+	challengeCtrl.getChallengeList(req.query.courseId, res);
 });
 
 router.delete("/", (req, res) => {
-	if (!challengeCtrl.deleteChallenge(req.query.challengeId)) {
-		response = {
-			status: 200,
-			message: "Challenge deleted successfully"
-		};
-	}
+	challengeCtrl.deleteChallenge(req.query.challengeId, res);
 });
+
+module.exports = router;

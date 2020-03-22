@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
-	profId: mongoose.Schema.Types.ObjectId,
-	name: String
+	profId: String,
+	name: String,
+	code: String // code for a student to be able to login
 });
 
-module.exports = mongoose.model("Course", challengeSchema);
+module.exports = mongoose.model("Course", courseSchema);

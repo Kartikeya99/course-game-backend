@@ -1,33 +1,30 @@
 const courseCtrl = require("../controllers/Course");
-const router = express.Router();
 const express = require("express");
+const router = express.Router();
+
+router.post("/create", (req, res) => {
+	console.log(req.body);
+	data = courseCtrl.addCourse(req.body, res);
+});
 
 router.get("/", (req, res) => {
-	data = courseCtrl.getCourseList(req.query.userId);
-	response = {
-		status: 200,
-		message: data
-	};
-	res.send(response);
+	if (req.query.u || req.query.courseId) {
+		if (req.query.u) {
+			courseCtrl.getCoursesByProfId(req.query.profId, res);
+		} else {
+			courseCtrl.getCoursesByCourseId(req.query.courseId, res);
+		}
+	} else courseCtrl.getCourses(res);
 });
 
-router.get("/create", (req, res) => {
-	data = courseCtrl.addCourse(req.query.userId, req.query.name);
-	if (data.length != 0) {
-		response = {
-			status: 200,
-			message: data
-		};
-		res.send(response);
-	}
-});
+// TODO:
+
+// router.post("/", (req, res) => {
+// 	courseCtrl.getCourseListByCourseIds(req.query.courseList, res);
+// });
 
 router.delete("/", (req, res) => {
-	if (!courseCtrl.deleteCourse(req.query.courseId)) {
-		response = {
-			status: 200,
-			message: "Course deleted added"
-		};
-		res.send(response);
-	}
+	courseCtrl.deleteCourse(req.query.courseId, res);
 });
+
+module.exports = router;

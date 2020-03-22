@@ -1,52 +1,59 @@
 const Question = require("../models/Question");
 
-const addQuestion = (
-	challengeId,
-	category,
-	question,
-	answer,
-	option1,
-	option2,
-	option3,
-	option4,
-	textAnswer
-) => {
-	const newQuestion = {
-		challengeId,
-		category,
-		question,
-		answer,
-		option1,
-		option2,
-		option3,
-		option4,
-		textAnswer
-	};
-
+const addQuestion = (newQuestion, res) => {
 	Question.create(newQuestion, (err, message) => {
 		if (err) console.log(err);
-		else return 0;
+		else {
+			response = {
+				status: "200 OK",
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 
-const getQuestionList = challengeId => {
-	Question.find({ challengeId }, (err, docs) => {
+const getQuestionList = (challengeId, res) => {
+	Question.find({ challengeId }, (err, message) => {
 		if (err) console.log(err);
-		return docs;
+		else {
+			response = {
+				status: "200 OK",
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 
-const updateQuestion = question => {
-	Question.findByIdAndUpdate(question.id, question, err => {
-		if (err) console.log(err);
-		else return 0;
-	});
+const updateQuestion = (question, res) => {
+	Question.findByIdAndUpdate(
+		question.id,
+		question,
+		{ useFindAndModify: false },
+		(err, message) => {
+			if (err) console.log(err);
+			else {
+				response = {
+					status: "200 OK",
+					question
+				};
+				res.send(response);
+			}
+		}
+	);
 };
 
-const deleteQuestion = questionId => {
-	Question.deleteOne({ _id: questionId }, err => {
+const deleteQuestion = (questionId, res) => {
+	Question.deleteOne({ _id: questionId }, (err, message) => {
 		if (err) console.log(err);
-		else return 0;
+		else {
+			response = {
+				status: "200 OK",
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 

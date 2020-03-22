@@ -1,38 +1,72 @@
 const User = require("../models/User");
 
-const addUser = (name, category, yearIfStud, email, password) => {
-	const newUser = {
-		name,
-		category,
-		yearIfStud,
-		email,
-		password
-	};
-
+const addUser = (newUser, res) => {
 	User.create(newUser, (err, message) => {
 		if (err) console.log(err);
-		else return 0;
+		else {
+			response = {
+				status: "200 OK",
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 
-const getUser = user => {
-	User.find(user, (err, doc) => {
+const getAllUser = res => {
+	User.find({}, (err, message) => {
 		if (err) console.log(err);
-		else return doc;
+		else {
+			response = {
+				status: "200 OK",
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 
-const updateUser = user => {
-	User.findByIdAndUpdate(user.id, user, err => {
+const getUser = (user, res) => {
+	User.find(user, (err, message) => {
 		if (err) console.log(err);
-		else return 0;
+		else {
+			response = {
+				status: "200 OK",
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 
-const deleteUser = id => {
-	User.deleteOne({ _id: id }, err => {
+const updateUser = (user, res) => {
+	User.findByIdAndUpdate(
+		user.id,
+		user,
+		{ useFindAndModify: false },
+		(err, message) => {
+			if (err) console.log(err);
+			else {
+				response = {
+					status: "200 OK",
+					message
+				};
+				res.send(response);
+			}
+		}
+	);
+};
+
+const deleteUser = (id, res) => {
+	User.deleteOne({ _id: id }, (err, message) => {
 		if (err) console.log(err);
-		else return 0;
+		else {
+			response = {
+				status: "200 OK",
+				message
+			};
+			res.send(response);
+		}
 	});
 };
 
@@ -40,5 +74,6 @@ module.exports = {
 	addUser,
 	deleteUser,
 	updateUser,
-	getUser
+	getUser,
+	getAllUser
 };
