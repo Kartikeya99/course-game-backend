@@ -17,11 +17,9 @@ router.get("/", (req, res) => {
 	} else courseCtrl.getCourses(res);
 });
 
-// TODO:
-
-// router.post("/", (req, res) => {
-// 	courseCtrl.getCourseListByCourseIds(req.query.courseList, res);
-// });
+router.post("/", (req, res) => {
+	courseCtrl.getCourseListByCourseIds(req.body.courseList, res);
+});
 
 router.delete("/", (req, res) => {
 	courseCtrl.deleteCourse(req.query.courseId, res);

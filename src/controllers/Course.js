@@ -55,14 +55,21 @@ const getCoursesByCourseId = (courseId, res) => {
 // TODO:
 
 // The below api is when we call courses by the course ids.
-// const getCourseListByCourseIds = (courseIds, res) => {
-// 	courseIds.forEach(courseId => {
-// 		Course.find({ _id: courseId }, (err, doc) => {
-// 			if (err) console.log(err);
-// 			else data.push(doc[0]);
-// 		});
-// 	});
-// };
+const getCourseListByCourseIds = (courseIds, res) => {
+	data = [];
+	courseIds.forEach(courseId => {
+		data.push(Course.find({ _id: courseId }));
+	});
+	Promise.all(data).then(tempMsg => {
+		message = [];
+		for (i = 0; i < tempMsg.length; i++) message.push(tempMsg[i][0]);
+		response = {
+			status: "200 OK",
+			message
+		};
+		res.send(response);
+	});
+};
 
 const deleteCourse = (id, res) => {
 	Course.deleteOne({ _id: id }, err => {
@@ -81,7 +88,7 @@ module.exports = {
 	addCourse,
 	getCourses,
 	getCoursesByProfId,
-	//getCourseListByCourseIds,
+	getCourseListByCourseIds,
 	getCoursesByCourseId,
 	deleteCourse
 };

@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
 	password: String,
 	enrolledIn: { type: [String], default: "" }, // list of courses
 	attemptedChallenges: {
-		type: [{ course: String, challenge: String, marksScored: Number }],
+		type: [{ courseId: String, challengeId: String, marksScored: Number }],
 		default: ""
 	}
 	// with the above two, we can show the challenges for courses he's enrolled in but not attempted.
