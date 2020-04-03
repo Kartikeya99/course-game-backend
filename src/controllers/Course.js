@@ -6,7 +6,7 @@ const addCourse = (newCourse, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -14,13 +14,13 @@ const addCourse = (newCourse, res) => {
 };
 
 // For getting all courses
-const getCourses = res => {
+const getCourses = (res) => {
 	Course.find({}, (err, message) => {
 		if (err) console.log(err);
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -34,7 +34,7 @@ const getCoursesByProfId = (profId, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -46,38 +46,71 @@ const getCoursesByCourseId = (courseId, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
 	});
 };
-// TODO:
 
-// The below api is when we call courses by the course ids.
-const getCourseListByCourseIds = (courseIds, res) => {
-	data = [];
-	courseIds.forEach(courseId => {
-		data.push(Course.find({ _id: courseId }));
-	});
-	Promise.all(data).then(tempMsg => {
-		message = [];
-		for (i = 0; i < tempMsg.length; i++) message.push(tempMsg[i][0]);
-		response = {
-			status: "200 OK",
-			message
-		};
-		res.send(response);
+const validate = (course, res) => {
+	Course.find(course, (err, message) => {
+		if (err) console.log(err);
+		else {
+			response = {
+				status: "200 OK",
+				message,
+			};
+			res.send(response);
+		}
 	});
 };
 
+// The below api is when we call courses by the course ids.
+const getCourseListByCourseIds = (courseIds, res) => {
+	if (courseIds.length) {
+		data = [];
+		courseIds.forEach((courseId) => {
+			data.push(Course.find({ _id: courseId }));
+		});
+		Promise.all(data).then((tempMsg) => {
+			message = [];
+			for (i = 0; i < tempMsg.length; i++) message.push(tempMsg[i][0]);
+			response = {
+				status: "200 OK",
+				message,
+			};
+			res.send(response);
+		});
+	} else {
+		response = {
+			status: "200 OK",
+			message: [],
+		};
+		res.send(response);
+	}
+};
+
 const deleteCourse = (id, res) => {
-	Course.deleteOne({ _id: id }, err => {
+	Course.deleteOne({ _id: id }, (err) => {
 		if (err) console.log(err);
 		else {
 			response = {
 				status: 200,
-				message: "Course deleted"
+				message: "Course deleted",
+			};
+			res.send(response);
+		}
+	});
+};
+
+const deleteAll = (res) => {
+	Course.remove({}, (err) => {
+		if (err) console.log(err);
+		else {
+			response = {
+				status: 200,
+				message: "All courses deleted",
 			};
 			res.send(response);
 		}
@@ -88,7 +121,9 @@ module.exports = {
 	addCourse,
 	getCourses,
 	getCoursesByProfId,
+	validate,
 	getCourseListByCourseIds,
 	getCoursesByCourseId,
-	deleteCourse
+	deleteCourse,
+	deleteAll,
 };

@@ -6,20 +6,20 @@ const addUser = (newUser, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
 	});
 };
 
-const getAllUser = res => {
+const getAllUser = (res) => {
 	User.find({}, (err, message) => {
 		if (err) console.log(err);
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -32,7 +32,7 @@ const getUser = (user, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -41,7 +41,7 @@ const getUser = (user, res) => {
 
 const updateUser = (user, res) => {
 	User.findByIdAndUpdate(
-		user.id,
+		user._id,
 		user,
 		{ useFindAndModify: false },
 		(err, message) => {
@@ -49,7 +49,7 @@ const updateUser = (user, res) => {
 			else {
 				response = {
 					status: "200 OK",
-					message
+					message,
 				};
 				res.send(response);
 			}
@@ -63,7 +63,7 @@ const deleteUser = (id, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -75,5 +75,5 @@ module.exports = {
 	deleteUser,
 	updateUser,
 	getUser,
-	getAllUser
+	getAllUser,
 };

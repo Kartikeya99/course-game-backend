@@ -4,7 +4,10 @@ const Question = require("./Question");
 const challengeSchema = new mongoose.Schema({
 	courseId: String,
 	name: String,
-	attemptedBy: [{ userId: String, userName: String, marksObtained: Number }]
+	attemptedBy: {
+		type: [{ userId: String, userName: String, marksObtained: Number }],
+		default: []
+	}
 });
 
 module.exports = mongoose.model("Challenge", challengeSchema);
