@@ -1,15 +1,16 @@
 const Question = require("../models/Question");
 
-const addQuestion = (newQuestion, res) => {
-	Question.create(newQuestion, (err, message) => {
-		if (err) console.log(err);
-		else {
-			response = {
-				status: "200 OK",
-				message
-			};
-			res.send(response);
-		}
+const addQuestion = (questionList, res) => {
+	data = [];
+	questionList.forEach((question) => {
+		data.push(Question.create(question));
+	});
+	Promise.all(data).then((message) => {
+		response = {
+			status: "200 OK",
+			message,
+		};
+		res.send(response);
 	});
 };
 
@@ -19,29 +20,29 @@ const getQuestionList = (challengeId, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
 	});
 };
 
-const updateQuestion = (question, res) => {
-	Question.findByIdAndUpdate(
-		question.id,
-		question,
-		{ useFindAndModify: false },
-		(err, message) => {
-			if (err) console.log(err);
-			else {
-				response = {
-					status: "200 OK",
-					question
-				};
-				res.send(response);
-			}
-		}
-	);
+const updateQuestion = (questionList, res) => {
+	data = [];
+	questionList.forEach((question) => {
+		data.push(
+			Question.findByIdAndUpdate(question.id, question, {
+				useFindAndModify: false,
+			})
+		);
+	});
+	Promise.all(data).then((message) => {
+		response = {
+			status: "200 OK",
+			message,
+		};
+		res.send(response);
+	});
 };
 
 const deleteQuestion = (questionId, res) => {
@@ -50,7 +51,7 @@ const deleteQuestion = (questionId, res) => {
 		else {
 			response = {
 				status: "200 OK",
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -61,5 +62,5 @@ module.exports = {
 	addQuestion,
 	deleteQuestion,
 	updateQuestion,
-	getQuestionList
+	getQuestionList,
 };

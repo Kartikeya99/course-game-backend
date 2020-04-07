@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/create", (req, res) => {
-	questionCtrl.addQuestion(req.body, res);
+	questionCtrl.addQuestion(req.body.questionList, res);
 });
 
 router.get("/", (req, res) => {
@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/update", (req, res) => {
-	questionCtrl.updateQuestion(req.body, res);
+	questionCtrl.updateQuestion(req.body.questionList, res);
 });
 
 router.delete("/", (req, res) => {

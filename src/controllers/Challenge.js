@@ -7,7 +7,20 @@ const addChallenge = (newChallenge, res) => {
 		else {
 			response = {
 				status: 200,
-				message
+				message,
+			};
+			res.send(response);
+		}
+	});
+};
+
+const getChallengeFromId = (challengeId, res) => {
+	Challenge.find({ _id: challengeId }, (err, message) => {
+		if (err) console.log(err);
+		else {
+			response = {
+				status: 200,
+				message,
 			};
 			res.send(response);
 		}
@@ -20,7 +33,7 @@ const getChallengeList = (courseId, res) => {
 		else {
 			response = {
 				status: 200,
-				message
+				message,
 			};
 			res.send(response);
 		}
@@ -28,7 +41,7 @@ const getChallengeList = (courseId, res) => {
 };
 
 const deleteChallenge = (challengeId, res) => {
-	Challenge.deleteOne({ _id: challengeId }, err => {
+	Challenge.deleteOne({ _id: challengeId }, (err) => {
 		if (err) console.log(err);
 		else {
 			Question.deleteMany({ challengeId }, (err, msg) => {
@@ -36,7 +49,7 @@ const deleteChallenge = (challengeId, res) => {
 				else {
 					response = {
 						status: 200,
-						message: "Challenge deleted successfully"
+						message: "Challenge deleted successfully",
 					};
 					res.send(response);
 				}
@@ -45,4 +58,9 @@ const deleteChallenge = (challengeId, res) => {
 	});
 };
 
-module.exports = { addChallenge, deleteChallenge, getChallengeList };
+module.exports = {
+	addChallenge,
+	getChallengeList,
+	getChallengeFromId,
+	deleteChallenge,
+};

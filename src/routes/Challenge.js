@@ -7,6 +7,12 @@ router.post("/create", (req, res) => {
 });
 
 router.get("/", (req, res) => {
+	if (req.query.courseId)
+		challengeCtrl.getChallengeList(req.query.courseId, res);
+	else challengeCtrl.getChallengeFromId(req.query.challengeId, res);
+});
+
+router.get("/", (req, res) => {
 	challengeCtrl.getChallengeList(req.query.courseId, res);
 });
 
