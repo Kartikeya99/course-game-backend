@@ -40,6 +40,85 @@ const getChallengeList = (courseId, res) => {
 	});
 };
 
+const getLeaderboard = (challengeId, res) => {
+	Challenge.find({ _id: challengeId }, (err, challenge) => {
+		if (err) console.log(err);
+		else {
+			response = {
+				status: 200,
+				message: challenge[0].attemptedBy.sort(
+					(a, b) => a.marksObtained <= b.marksObtained
+				),
+			};
+			res.send(response);
+		}
+	});
+};
+
+const addAttempt = (challengeId, userAttempt, res) => {
+	Challenge.find({ _id: challengeId }, (err, challenge) => {
+		if (err) console.log(err);
+		else {
+			userAttempt.marksObtained = parseInt(userAttempt.marksObtained);
+			// we first get to know if the challenge has already been attempted by that person
+			let found = -1;
+			challenge = challenge[0];
+			found = challenge.attemptedBy.findIndex(
+				(element) => element.userId == userAttempt.userId
+			);
+			if (found == -1) {
+				// if not then this
+				Challenge.findByIdAndUpdate(
+					challengeId,
+					{ $push: { attemptedBy: userAttempt } },
+					{ useFindAndModify: false },
+					(err) => {
+						if (err) console.log(err);
+						else {
+							response = {
+								status: 200,
+								message: "Done",
+							};
+							res.send(response);
+						}
+					}
+				);
+			} else {
+				// if attempted
+				let attemps = [];
+				for (let i = 0; i < challenge.attemptedBy.length - 1; i++) {
+					if (challenge.attemptedBy[i].userId != userAttempt.userId)
+						attemps.push(challenge.attemptedBy[i]);
+				}
+				// we first need to remove that attempt from the challenge
+				challenge.attemptedBy = attemps;
+				Challenge.update({ _id: challenge._id }, challenge, (err) => {
+					if (err) console.log(err);
+					else {
+						// and then add the attempt with the latest marks
+						Challenge.findByIdAndUpdate(
+							challengeId,
+							{ $push: { attemptedBy: userAttempt } },
+							{ useFindAndModify: false },
+							(err) => {
+								if (err) console.log(err);
+								else {
+									response = {
+										status: 200,
+										message: "Done",
+									};
+									res.send(response);
+								}
+							}
+						);
+						// ik too bad implementation but the submission is tmrw and that's why.
+					}
+				});
+			}
+		}
+	});
+};
+
 const deleteChallenge = (challengeId, res) => {
 	Challenge.deleteOne({ _id: challengeId }, (err) => {
 		if (err) console.log(err);
@@ -62,5 +141,7 @@ module.exports = {
 	addChallenge,
 	getChallengeList,
 	getChallengeFromId,
+	getLeaderboard,
 	deleteChallenge,
+	addAttempt,
 };
