@@ -67,6 +67,7 @@ const addAttempt = (challengeId, userAttempt, res) => {
 				(element) => element.userId == userAttempt.userId
 			);
 			if (found == -1) {
+				console.log("not found");
 				// if not then this
 				Challenge.findByIdAndUpdate(
 					challengeId,
@@ -85,35 +86,45 @@ const addAttempt = (challengeId, userAttempt, res) => {
 				);
 			} else {
 				// if attempted
+				console.log("hello");
+				console.log(challenge + "\n");
 				let attemps = [];
 				for (let i = 0; i < challenge.attemptedBy.length - 1; i++) {
-					if (challenge.attemptedBy[i].userId != userAttempt.userId)
+					if (challenge.attemptedBy[i].userId != userAttempt.userId) {
+						console.log(challenge.attemptedBy[i].userId + "\n");
 						attemps.push(challenge.attemptedBy[i]);
+					}
 				}
+				console.log("filtered");
+				console.log(challenge + "\n");
 				// we first need to remove that attempt from the challenge
 				challenge.attemptedBy = attemps;
-				Challenge.update({ _id: challenge._id }, challenge, (err) => {
-					if (err) console.log(err);
-					else {
-						// and then add the attempt with the latest marks
-						Challenge.findByIdAndUpdate(
-							challengeId,
-							{ $push: { attemptedBy: userAttempt } },
-							{ useFindAndModify: false },
-							(err) => {
-								if (err) console.log(err);
-								else {
-									response = {
-										status: 200,
-										message: "Done",
-									};
-									res.send(response);
+				Challenge.updateOne(
+					{ _id: challenge._id },
+					challenge,
+					(err) => {
+						if (err) console.log(err);
+						else {
+							// and then add the attempt with the latest marks
+							Challenge.findByIdAndUpdate(
+								challengeId,
+								{ $push: { attemptedBy: userAttempt } },
+								{ useFindAndModify: false },
+								(err) => {
+									if (err) console.log(err);
+									else {
+										response = {
+											status: 200,
+											message: "Done",
+										};
+										res.send(response);
+									}
 								}
-							}
-						);
-						// ik too bad implementation but the submission is tmrw and that's why.
+							);
+							// ik too bad implementation but the submission is tmrw and that's why.
+						}
 					}
-				});
+				);
 			}
 		}
 	});
